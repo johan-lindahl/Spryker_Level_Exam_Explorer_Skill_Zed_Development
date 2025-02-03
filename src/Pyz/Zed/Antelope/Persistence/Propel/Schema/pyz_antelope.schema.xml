@@ -6,6 +6,12 @@
     <table name="pyz_antelope" idMethod="native" allowPkInsert="true" phpName="PyzAntelope">
         <column name="id_antelope" required="true" type="INTEGER" primaryKey="true" autoIncrement="true"/>
         <column name="name" required="true" type="VARCHAR" size="255"/>
+        <column name="fk_antelope_location" type="INTEGER" required="false"/>
+
+        <foreign-key name="pyz_antelope_location-fk_antelope_location" foreignTable="pyz_antelope_location">
+            <reference local="fk_antelope_location" foreign="id_location" />
+        </foreign-key>
+
         <unique name="pyz_antelope-name">
             <unique-column name="name"/>
         </unique>
