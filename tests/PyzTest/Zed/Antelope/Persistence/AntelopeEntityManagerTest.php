@@ -19,7 +19,7 @@ class AntelopeEntityManagerTest extends Unit
     {
         $antelopeLocationDTO = new AntelopeLocationTransfer();
         $antelopeLocationDTO->setLocationName("TEST-location" . time());
-        $antelopeLocationDTO = $this->entityManager->createLocation($antelopeLocationDTO);
+        $antelopeLocationDTO = $this->entityManager->createAntelopeLocation($antelopeLocationDTO);
 
         $antelopeDTO = new AntelopeTransfer();
         $antelopeDTO->setName('TEST-' . time());

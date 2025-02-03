@@ -57,7 +57,7 @@ class AntelopeFacadeTest extends Unit
     {
         // Arrange
         $idLocation = 1;
-        $expectedAntelopeLocationTransfer = (new AntelopeLocationTransfer())->setIdAntelopeLocation($idLocation);
+        $expectedAntelopeLocationTransfer = (new AntelopeLocationTransfer())->setIdLocation($idLocation);
         $antelopeLocationReaderMock = $this->createMock(AntelopeLocationReader::class);
 
         $this->businessFactoryMock->expects($this->once())

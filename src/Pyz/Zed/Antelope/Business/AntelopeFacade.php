@@ -5,6 +5,7 @@ namespace Pyz\Zed\Antelope\Business;
 use Generated\Shared\Transfer\AntelopeCriteriaTransfer;
 use Generated\Shared\Transfer\AntelopeResponseTransfer;
 use Generated\Shared\Transfer\AntelopeTransfer;
+use Generated\Shared\Transfer\AntelopeLocationTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -21,5 +22,16 @@ class AntelopeFacade extends AbstractFacade implements AntelopeFacadeInterface
         AntelopeCriteriaTransfer $antelopeCriteriaTransfer
     ): AntelopeResponseTransfer {
         return $this->getFactory()->createAntelopeReader()->getAntelope($antelopeCriteriaTransfer);
+    }
+
+    public function createAntelopeLocation(AntelopeLocationTransfer $antelopeLocationTransfer
+    ): AntelopeLocationTransfer {
+        return $this->getFactory()->createAntelopeLocationWriter()->createAntelopeLocation($antelopeLocationTransfer);
+    }
+
+    public function getAntelopeLocationById(
+        int $locationId
+    ): AntelopeLocationTransfer {
+        return $this->getFactory()->createAntelopeLocationReader()->getAntelopeLocationById($locationId);
     }
 }

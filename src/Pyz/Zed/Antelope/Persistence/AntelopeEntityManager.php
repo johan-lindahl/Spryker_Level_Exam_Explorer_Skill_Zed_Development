@@ -21,7 +21,7 @@ class AntelopeEntityManager extends AbstractEntityManager implements
         return $antelopeTransfer->fromArray($antelopeEntity->toArray(), true);
     }
 
-    public function createLocation(AntelopeLocationTransfer $antelopeLocationTransfer
+    public function createAntelopeLocation(AntelopeLocationTransfer $antelopeLocationTransfer
     ): AntelopeLocationTransfer {
 
         $antelopeLocationEntity = new PyzAntelopeLocation();
