@@ -8,6 +8,7 @@ use Generated\Shared\Transfer\AntelopeTransfer;
 use Generated\Shared\Transfer\AntelopeLocationTransfer;
 use Generated\Shared\Transfer\AntelopeLocationCriteriaTransfer;
 use Generated\Shared\Transfer\AntelopeLocationResponseTransfer;
+use Generated\Shared\Transfer\AntelopeLocationCollectionTransfer;
 
 /**
  * @method  \Pyz\Zed\Antelope\Business\AntelopeBusinessFactory getFactory()
@@ -29,4 +30,6 @@ interface AntelopeFacadeInterface
     public function getAntelopeLocationById(
         AntelopeLocationCriteriaTransfer $antelopeLocationCriteriaTransfer
     ): AntelopeLocationResponseTransfer;
+
+    public function getAntelopeLocations(): AntelopeLocationCollectionTransfer;
 }

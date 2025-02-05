@@ -5,6 +5,7 @@ namespace Pyz\Zed\Antelope\Persistence;
 use Orm\Zed\Antelope\Persistence\PyzAntelopeQuery;
 use Orm\Zed\Antelope\Persistence\PyzAntelopeLocationQuery;
 use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
+use Pyz\Zed\Antelope\Persistence\Propel\Mapper\LocationMapper;
 
 class AntelopePersistenceFactory extends AbstractPersistenceFactory
 {
@@ -16,5 +17,10 @@ class AntelopePersistenceFactory extends AbstractPersistenceFactory
     public function createAntelopeLocationQuery(): PyzAntelopeLocationQuery
     {
         return PyzAntelopeLocationQuery::create();
+    }
+
+    public function createAntelopeLocationMapper(): LocationMapper
+    {
+        return new LocationMapper();
     }
 }

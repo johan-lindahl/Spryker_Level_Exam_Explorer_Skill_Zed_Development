@@ -9,9 +9,11 @@ use Generated\Shared\Transfer\AntelopeLocationTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 use Generated\Shared\Transfer\AntelopeLocationCriteriaTransfer;
 use Generated\Shared\Transfer\AntelopeLocationResponseTransfer;
+use Generated\Shared\Transfer\AntelopeLocationCollectionTransfer;
 
 /**
  * @method  \Pyz\Zed\Antelope\Business\AntelopeBusinessFactory getFactory()
+ * @method  \Pyz\Zed\Antelope\Persistence\AntelopeRepositoryInterface getRepository()
  */
 class AntelopeFacade extends AbstractFacade implements AntelopeFacadeInterface
 {
@@ -35,5 +37,9 @@ class AntelopeFacade extends AbstractFacade implements AntelopeFacadeInterface
         AntelopeLocationCriteriaTransfer $antelopeLocationCriteriaTransfer
     ): AntelopeLocationResponseTransfer {
         return $this->getFactory()->createAntelopeLocationReader()->getAntelopeLocationById($antelopeLocationCriteriaTransfer);
+    }
+
+    public function getAntelopeLocations(): AntelopeLocationCollectionTransfer {
+        return $this->getRepository()->getAntelopeLocations();
     }
 }

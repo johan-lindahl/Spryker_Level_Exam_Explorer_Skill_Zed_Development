@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pyz\Zed\AntelopeGui\Communication\Table;
 
 use Orm\Zed\Antelope\Persistence\Map\PyzAntelopeTableMap;
+use Orm\Zed\Antelope\Persistence\Map\PyzAntelopeLocationTableMap;
 use Orm\Zed\Antelope\Persistence\PyzAntelope;
 use Orm\Zed\Antelope\Persistence\PyzAntelopeQuery;
 use Propel\Runtime\Collection\ObjectCollection;
@@ -15,7 +16,7 @@ class AntelopeTable extends AbstractTable
 {
     public const string COL_ID_ANTELOPE = PyzAntelopeTableMap::COL_ID_ANTELOPE;
     public const string COL_NAME = PyzAntelopeTableMap::COL_NAME;
-
+    public const string COL_LOCATION = "location";
 
     public function __construct(protected PyzAntelopeQuery $antelopeQuery)
     {
@@ -31,18 +32,19 @@ class AntelopeTable extends AbstractTable
         $config->setHeader([
             static::COL_ID_ANTELOPE => 'Antelope ID',
             static::COL_NAME => 'Name',
+            static::COL_LOCATION => "Location"
 
         ]);
 
         $config->setSortable([
             static::COL_ID_ANTELOPE,
             static::COL_NAME,
-
+            static::COL_LOCATION
         ]);
 
         $config->setSearchable([
             static::COL_ID_ANTELOPE,
-            static::COL_NAME,
+            static::COL_NAME
         ]);
 
         return $config;
@@ -55,8 +57,12 @@ class AntelopeTable extends AbstractTable
      */
     protected function prepareData(TableConfiguration $config): array
     {
+        $antelopeWithLocationQuery = $this->antelopeQuery
+            ->joinPyzAntelopeLocation()
+            ->withColumn(PyzAntelopeLocationTableMap::COL_LOCATION_NAME, static::COL_LOCATION);
+
         $antelopeEntityCollection = $this->runQuery(
-            $this->antelopeQuery,
+            $antelopeWithLocationQuery,
             $config,
             true
         );
@@ -80,7 +86,8 @@ class AntelopeTable extends AbstractTable
         foreach ($antelopeEntityCollection as $antelopeEntity) {
             $returns[] = [
                 static::COL_ID_ANTELOPE => $antelopeEntity->getIdAntelope(),
-                static::COL_NAME => $antelopeEntity->getName()
+                static::COL_NAME => $antelopeEntity->getName(),
+                static::COL_LOCATION => $antelopeEntity->getLocation()
             ];
         }
 

@@ -7,6 +7,7 @@ use Generated\Shared\Transfer\AntelopeCriteriaTransfer;
 use Generated\Shared\Transfer\AntelopeTransfer;
 use Generated\Shared\Transfer\AntelopeLocationTransfer;
 use Generated\Shared\Transfer\AntelopeLocationCriteriaTransfer;
+use Generated\Shared\Transfer\AntelopeLocationCollectionTransfer;
 
 /**
  * @method \Pyz\Zed\Antelope\Persistence\AntelopePersistenceFactory getFactory()
@@ -20,4 +21,6 @@ interface AntelopeRepositoryInterface
     public function getAntelopeLocationById(
         AntelopeLocationCriteriaTransfer $antelopeLocationCriteriaTransfer
     ): ?AntelopeLocationTransfer;
+
+    public function getAntelopeLocations(): AntelopeLocationCollectionTransfer;
 }

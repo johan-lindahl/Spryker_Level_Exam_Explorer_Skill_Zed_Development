@@ -8,6 +8,7 @@ use Generated\Shared\Transfer\AntelopeLocationTransfer;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 use Pyz\Zed\Antelope\Persistence\Exception\EntityNotFoundException;
 use Generated\Shared\Transfer\AntelopeLocationCriteriaTransfer;
+use Generated\Shared\Transfer\AntelopeLocationCollectionTransfer;
 
 /**
  * @method \Pyz\Zed\Antelope\Persistence\AntelopePersistenceFactory getFactory()
@@ -48,4 +49,16 @@ class AntelopeRepository extends AbstractRepository implements
         }
         return (new AntelopeLocationTransfer())->fromArray($antelopeLocationEntity->toArray(), true);
     }
+
+    public function getAntelopeLocations(): AntelopeLocationCollectionTransfer
+    {
+        $locationEntities = $this->getFactory()
+            ->createAntelopeLocationQuery()
+            ->orderByLocationName()
+            ->find();
+
+        return $this->getFactory()
+            ->createAntelopeLocationMapper()
+            ->mapLocationTransferCollection($locationEntities, new AntelopeLocationCollectionTransfer());
+    }   
 }

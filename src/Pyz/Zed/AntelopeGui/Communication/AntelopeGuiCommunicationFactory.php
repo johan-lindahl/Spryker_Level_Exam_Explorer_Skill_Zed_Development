@@ -14,6 +14,7 @@ use Pyz\Zed\AntelopeGui\Communication\Table\AntelopeTable;
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use Spryker\Zed\Kernel\Exception\Container\ContainerKeyNotFoundException;
 use Symfony\Component\Form\FormInterface;
+use Pyz\Zed\AntelopeGui\Communication\Form\DataProvider\AntelopeCreateFormDataProvider;
 
 /**
  * @method AntelopeGuiConfig getConfig()
@@ -60,5 +61,10 @@ class AntelopeGuiCommunicationFactory extends AbstractCommunicationFactory
     public function getAntelopeFacade(): AntelopeFacadeInterface
     {
         return $this->getProvidedDependency(AntelopeGuiDependencyProvider::FACADE_ANTELOPE);
+    }
+
+    public function createAntelopeLocationFormDataProvider(): AntelopeCreateFormDataProvider
+    {
+        return new AntelopeCreateFormDataProvider($this->getAntelopeFacade());
     }
 }
