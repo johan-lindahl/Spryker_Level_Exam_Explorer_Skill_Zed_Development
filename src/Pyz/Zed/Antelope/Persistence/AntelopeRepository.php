@@ -7,6 +7,7 @@ use Generated\Shared\Transfer\AntelopeTransfer;
 use Generated\Shared\Transfer\AntelopeLocationTransfer;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
 use Pyz\Zed\Antelope\Persistence\Exception\EntityNotFoundException;
+use Generated\Shared\Transfer\AntelopeLocationCriteriaTransfer;
 
 /**
  * @method \Pyz\Zed\Antelope\Persistence\AntelopePersistenceFactory getFactory()
@@ -24,7 +25,7 @@ class AntelopeRepository extends AbstractRepository implements
             throw new EntityNotFoundException("Antelope {$name} not found");
         }
 
-        $location = $this->getAntelopeLocationById($antelopeEntity->getFkAntelopeLocation());
+        $location = $this->getAntelopeLocationByIdInt($antelopeEntity->getFkAntelopeLocation());
 
         $antelopeDTO = (new AntelopeTransfer())->fromArray($antelopeEntity->toArray(), true);
         $antelopeDTO->setLocation($location);
@@ -32,7 +33,12 @@ class AntelopeRepository extends AbstractRepository implements
         return $antelopeDTO;
     }
 
-    public function getAntelopeLocationById(int $locationId): ?AntelopeLocationTransfer
+    public function getAntelopeLocationById(AntelopeLocationCriteriaTransfer $antelopeLocationCriteriaTransfer): ?AntelopeLocationTransfer
+    {
+        return $this->getAntelopeLocationByIdInt($antelopeLocationCriteriaTransfer->getIdLocation());
+    }
+
+    private function getAntelopeLocationByIdInt(int $locationId): ?AntelopeLocationTransfer
     {
         $antelopeLocationEntity = $this->getFactory()->createAntelopeLocationQuery()->filterByIdLocation(
             $locationId

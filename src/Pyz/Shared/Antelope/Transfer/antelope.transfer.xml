@@ -17,8 +17,18 @@
     <transfer name="AntelopeCriteria">
         <property name="name" type="string"/>
     </transfer>
+
+    <transfer name="AntelopeLocationCriteria">
+        <property name="idLocation" type="int"/>
+    </transfer>
+
     <transfer name="AntelopeResponse">
         <property name="antelope" type="Antelope"/>
+        <property name="isSuccessFul" type="bool"/>
+    </transfer>
+
+    <transfer name="AntelopeLocationResponse">
+        <property name="antelopeLocation" type="AntelopeLocation"/>
         <property name="isSuccessFul" type="bool"/>
     </transfer>
 </transfers>

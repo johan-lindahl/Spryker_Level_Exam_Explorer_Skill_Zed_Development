@@ -7,6 +7,8 @@ use Generated\Shared\Transfer\AntelopeResponseTransfer;
 use Generated\Shared\Transfer\AntelopeTransfer;
 use Generated\Shared\Transfer\AntelopeLocationTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
+use Generated\Shared\Transfer\AntelopeLocationCriteriaTransfer;
+use Generated\Shared\Transfer\AntelopeLocationResponseTransfer;
 
 /**
  * @method  \Pyz\Zed\Antelope\Business\AntelopeBusinessFactory getFactory()
@@ -30,8 +32,8 @@ class AntelopeFacade extends AbstractFacade implements AntelopeFacadeInterface
     }
 
     public function getAntelopeLocationById(
-        int $locationId
-    ): AntelopeLocationTransfer {
-        return $this->getFactory()->createAntelopeLocationReader()->getAntelopeLocationById($locationId);
+        AntelopeLocationCriteriaTransfer $antelopeLocationCriteriaTransfer
+    ): AntelopeLocationResponseTransfer {
+        return $this->getFactory()->createAntelopeLocationReader()->getAntelopeLocationById($antelopeLocationCriteriaTransfer);
     }
 }

@@ -4,9 +4,11 @@ namespace PyzTest\Zed\Antelope\Business;
 
 use Codeception\Test\Unit;
 use Generated\Shared\Transfer\AntelopeCriteriaTransfer;
-use Generated\Shared\Transfer\AntelopeLocationTransfer;
+use Generated\Shared\Transfer\AntelopeLocationCriteriaTransfer;
 use Generated\Shared\Transfer\AntelopeResponseTransfer;
+use Generated\Shared\Transfer\AntelopeLocationResponseTransfer;
 use Generated\Shared\Transfer\AntelopeTransfer;
+use Generated\Shared\Transfer\AntelopeLocationTransfer;
 use Pyz\Zed\Antelope\Business\Antelope\Reader\AntelopeReader;
 use Pyz\Zed\Antelope\Business\Antelope\Writer\AntelopeWriter;
 use Pyz\Zed\Antelope\Business\AntelopeBusinessFactory;
@@ -57,7 +59,11 @@ class AntelopeFacadeTest extends Unit
     {
         // Arrange
         $idLocation = 1;
-        $expectedAntelopeLocationTransfer = (new AntelopeLocationTransfer())->setIdLocation($idLocation);
+
+        $criteriaTransfer = new AntelopeLocationCriteriaTransfer();
+        $criteriaTransfer->setIdLocation($idLocation);
+        $expectedResponse = new AntelopeLocationResponseTransfer();
+
         $antelopeLocationReaderMock = $this->createMock(AntelopeLocationReader::class);
 
         $this->businessFactoryMock->expects($this->once())
@@ -66,14 +72,14 @@ class AntelopeFacadeTest extends Unit
 
         $antelopeLocationReaderMock->expects($this->once())
             ->method('getAntelopeLocationById')
-            ->with($idLocation)
-            ->willReturn($expectedAntelopeLocationTransfer);
+            ->with($criteriaTransfer)
+            ->willReturn($expectedResponse);
 
         // Act
-        $result = $this->antelopeFacade->getAntelopeLocationById($idLocation);
+        $result = $this->antelopeFacade->getAntelopeLocationById($criteriaTransfer);
 
         // Assert
-        $this->assertSame($expectedAntelopeLocationTransfer, $result);
+        $this->assertSame($expectedResponse, $result);
     }
 
     public function testGetAntelope(): void
