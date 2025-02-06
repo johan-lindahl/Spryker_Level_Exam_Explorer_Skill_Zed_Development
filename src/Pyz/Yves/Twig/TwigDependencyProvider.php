@@ -44,6 +44,7 @@ use SprykerShop\Yves\ShopPermission\Plugin\Twig\ShopPermissionTwigPlugin;
 use SprykerShop\Yves\ShopUi\Plugin\Twig\FunctionTwigPlugin;
 use SprykerShop\Yves\ShopUi\Plugin\Twig\NumberFormatterTwigPlugin;
 use SprykerShop\Yves\ShopUi\Plugin\Twig\ShopUiTwigPlugin;
+use SprykerShop\Yves\ShopUi\Plugin\Twig\GeneratePathTwigPlugin;
 use SprykerShop\Yves\WebProfilerWidget\Plugin\Twig\WebProfilerTwigLoaderPlugin;
 
 class TwigDependencyProvider extends SprykerTwigDependencyProvider
@@ -74,6 +75,7 @@ class TwigDependencyProvider extends SprykerTwigDependencyProvider
             new CmsContentWidgetTwigPlugin(),
             new CmsTwigPlugin(),
             new ShopUiTwigPlugin(),
+            new GeneratePathTwigPlugin(),
             new CategoryTwigPlugin(),
             new CategoryFilterTwigPlugin(),
             new DateTimeFormatterTwigPlugin(),
