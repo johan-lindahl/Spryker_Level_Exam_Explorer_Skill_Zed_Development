@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<statemachine
+    xmlns="spryker:oms-01"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="CustomOrderProcess" main="true">
+
+        <states>
+            <state name="new" />
+            <state name="paid" />
+            <state name="shipped" />
+            <state name="canceled" />
+            <state name="closed" />
+        </states>
+
+        <transitions>
+            <transition happy="true" condition="CustomOrderProcess/IsAuthorized">
+                <source>new</source>
+                <target>paid</target>
+                <event>authorize_payment</event>
+            </transition>
+
+            <transition>
+                <source>new</source>
+                <target>canceled</target>
+                <event>authorize_payment</event>
+            </transition>
+
+            <transition happy="true">
+                <source>paid</source>
+                <target>shipped</target>
+                <event>ship_order</event>
+            </transition>
+
+            <transition>
+                <source>paid</source>
+                <target>canceled</target>
+                <event>cancel_order</event>
+            </transition>
+
+            <transition happy="true">
+                <source>shipped</source>
+                <target>closed</target>
+                <event>confirm_shipment</event>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="authorize_payment" onEnter="true" command="CustomOrderProcess/AuthorizePayment"/>
+            <event name="ship_order" manual="true" command="CustomOrderProcess/ShipOrder"/>
+            <event name="confirm_shipment" manual="true"/>
+            <event name="cancel_order" manual="true"/>
+        </events>
+    </process>
+</statemachine>
