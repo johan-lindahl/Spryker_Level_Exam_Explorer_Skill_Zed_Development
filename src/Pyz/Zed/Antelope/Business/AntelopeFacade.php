@@ -31,7 +31,7 @@ class AntelopeFacade extends AbstractFacade implements AntelopeFacadeInterface
 
     public function getAntelopeLocationById(
         int $idLocation,
-    ): ?AntelopeLocationTransfer {
+    ): ?AntelopeLocationResponseTransfer {
         return $this->getFactory()->createAntelopeLocationReader()->getAntelopeLocationById($idLocation);
     }
 
@@ -45,6 +45,18 @@ class AntelopeFacade extends AbstractFacade implements AntelopeFacadeInterface
         AntelopeLocationTransfer $antelopeLocationTransfer,
     ): AntelopeLocationTransfer {
         return $this->getFactory()->createAntelopeLocationWriter()->createAntelopeLocation($antelopeLocationTransfer);
+    }
+
+    public function updateAntelopeLocation(
+        AntelopeLocationTransfer $antelopeLocationTransfer,
+    ): AntelopeLocationTransfer {
+        return $this->getFactory()->createAntelopeLocationUpdate()->updateAntelopeLocation($antelopeLocationTransfer);
+    }
+
+    public function deleteAntelopeLocation(
+        AntelopeLocationTransfer $antelopeLocationTransfer
+    ): bool {
+        return $this->getFactory()->createAntelopeLocationDeleter()->deleteAntelopeLocation($antelopeLocationTransfer);
     }
 
     public function getAntelopeLocation(

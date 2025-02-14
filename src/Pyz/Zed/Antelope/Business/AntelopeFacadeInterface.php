@@ -27,13 +27,21 @@ interface AntelopeFacadeInterface
         AntelopeLocationTransfer $antelopeLocationTransfer,
     ): AntelopeLocationTransfer;
 
+    public function updateAntelopeLocation(
+        AntelopeLocationTransfer $antelopeLocationTransfer
+    ): AntelopeLocationTransfer;
+
+    public function deleteAntelopeLocation(
+        AntelopeLocationTransfer $antelopeLocationTransfer
+    ): bool;
+
     public function getAntelope(
         AntelopeCriteriaTransfer $antelopeCriteriaTransfer,
     ): AntelopeResponseTransfer;
 
     public function getAntelopeLocationById(
         int $idLocation,
-    ): ?AntelopeLocationTransfer;
+    ): ?AntelopeLocationResponseTransfer;
 
     public function getAntelopeLocation(
         AntelopeLocationCriteriaTransfer $antelopeLocationCriteria,

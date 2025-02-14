@@ -13,6 +13,7 @@ use Generated\Shared\Transfer\AntelopeLocationTransfer;
 use Generated\Shared\Transfer\AntelopeTransfer;
 use Orm\Zed\Antelope\Persistence\PyzAntelope;
 use Orm\Zed\Antelope\Persistence\PyzAntelopeLocation;
+use Pyz\Zed\Antelope\Persistence\Exception\EntityNotFoundException;
 use Spryker\Zed\Kernel\Persistence\AbstractEntityManager;
 
 /**
@@ -38,9 +39,48 @@ class AntelopeEntityManager extends AbstractEntityManager implements
         $antelopeEntity->fromArray($antelopeLocationTransfer->modifiedToArray());
         $antelopeEntity->save();
 
-        return $antelopeLocationTransfer->fromArray(
-            $antelopeEntity->toArray(),
-            true,
+        $mapper = $this->getFactory()->createAntelopeLocationMapper();
+
+        return $mapper->mapAntelopeLocationEntityToTransfer(
+            $antelopeEntity,
+            $antelopeLocationTransfer
         );
+    }
+
+    public function updateAntelopeLocation(
+        AntelopeLocationTransfer $antelopeLocationTransfer,
+    ): AntelopeLocationTransfer {
+
+        $antelopeLocationId = $antelopeLocationTransfer->getIdAntelopeLocation();
+        $antelopeEntity = $this->getFactory()
+            ->createAntelopeLocationQuery()
+            ->filterByIdLocation($antelopeLocationId)->findOne();
+        if (!$antelopeEntity) {
+            throw new EntityNotFoundException("Antelope location with id $antelopeLocationId was not found", 404);
+        }
+        $mapper = $this->getFactory()->createAntelopeLocationMapper();
+        $antelopeLocationEntity = $mapper->mapAntelopeLocationTransferToEntity(
+            $antelopeLocationTransfer,
+            $antelopeEntity
+        );
+        $antelopeLocationEntity->save();
+        return $mapper->mapAntelopeLocationEntityToTransfer(
+            $antelopeEntity,
+            $antelopeLocationTransfer
+        );
+    }
+
+    public function deleteAntelopeLocation(
+        AntelopeLocationTransfer $antelopeLocationTransfer,
+    ): bool
+    {
+        $antelopeLocationEntity = $this->getFactory()
+            ->createAntelopeLocationMapper()
+            ->mapAntelopeLocationTransferToEntity(
+                $antelopeLocationTransfer,
+                new PyzAntelopeLocation()
+            );
+        $antelopeLocationEntity->delete();
+        return $antelopeLocationEntity->isDeleted();
     }
 }

@@ -16,6 +16,10 @@ use Generated\Shared\Transfer\AntelopeLocationTransfer;
 use Generated\Shared\Transfer\AntelopeTransfer;
 use Pyz\Zed\Antelope\Persistence\Exception\EntityNotFoundException;
 use Spryker\Zed\Kernel\Persistence\AbstractRepository;
+use Generated\Shared\Transfer\AntelopeLocationConditionTransfer;
+use Generated\Shared\Transfer\PaginationTransfer;
+use Orm\Zed\Antelope\Persistence\Base\PyzAntelopeLocationQuery;
+use Propel\Runtime\ActiveQuery\Criteria;
 
 /**
  * @method \Pyz\Zed\Antelope\Persistence\AntelopePersistenceFactory getFactory()
@@ -114,12 +118,20 @@ class AntelopeRepository extends AbstractRepository implements
     {
         $query = $this->getFactory()->createAntelopeLocationQuery();
 
-        if ($criteriaTransfer->getLocationName() !== null) {
-            $query->filterByLocationName($criteriaTransfer->getLocationName());
+        $conditions = $criteriaTransfer->getAntelopeLocationConditions();
+        if ($conditions) {
+            $this->applyConditions($conditions, $query);
         }
-        if ($criteriaTransfer->getIdAntelopeLocation() !== null) {
-            $query->filterByLocationName($criteriaTransfer->getIdAntelopeLocation());
-        }
+
+        $pagination = $criteriaTransfer->getPagination();
+        if ($pagination) {
+            $this->applyPagination($pagination, $query);
+        }        
+
+        $sortingCollection = $criteriaTransfer->getSortCollection();
+        if ($sortingCollection) {
+            $this->applySorting($sortingCollection, $query);
+        }        
 
         $antelopeLocations = $query->find();
 
@@ -149,5 +161,55 @@ class AntelopeRepository extends AbstractRepository implements
     public function getAntelopeLocationsCollection(): AntelopeLocationCollectionTransfer
     {
         return $this->getAntelopeLocations(new AntelopeLocationCriteriaTransfer());
+    }
+
+    private function applySorting(
+        \ArrayObject $sortCollection,
+        PyzAntelopeLocationQuery $pyzAntelopeLocationQuery
+    ) {
+        /** @var \Generated\Shared\Transfer\SortTransfer $sort */
+        foreach ($sortCollection as $sort) {
+            $pyzAntelopeLocationQuery->orderBy($sort->getField(), $sort->getIsAscending() ? Criteria::ASC : Criteria::DESC);
+        }
+    }
+
+    private function applyConditions(
+        AntelopeLocationConditionTransfer $conditions,
+        PyzAntelopeLocationQuery $pyzAntelopeLocationQuery
+    ) {
+
+        if ($id = $conditions->getIdAntelopeLocation()) {
+            $pyzAntelopeLocationQuery->_or()->filterByIdLocation($id);      
+        }
+        if ($name = $conditions->getLocationName()) {
+            $pyzAntelopeLocationQuery->_or()->filterByLocationName_Like("%$name%");
+        }
+        if ($ids = $conditions->getAntelopeLocationIds()) {
+            $pyzAntelopeLocationQuery->_or()->filterByIdLocation_In($ids); 
+        }
+    }
+
+    private function applyPagination(
+        PaginationTransfer $paginationTransfer,
+        PyzAntelopeLocationQuery $pyzAntelopeQuery
+    ) {
+        if ($paginationTransfer->getOffset() !== null && $paginationTransfer->getLimit() > 0) {
+            $paginationTransfer->setNbResults($pyzAntelopeQuery->count());
+            $pyzAntelopeQuery->setOffset((int)$paginationTransfer->getOffset());
+            $pyzAntelopeQuery->setLimit((int)$paginationTransfer->getLimit());
+        } elseif ($paginationTransfer->getPage() !== null && $paginationTransfer->getMaxPerPage()) {
+            $pager = $pyzAntelopeQuery->paginate(
+                $paginationTransfer->getPage(),
+                $paginationTransfer->getMaxPerPage()
+            );
+            $paginationTransfer
+                ->setNbResults($pager->getNbResults())
+                ->setFirstIndex($pager->getFirstIndex())
+                ->setLastIndex($pager->getLastIndex())
+                ->setNextPage($pager->getNextPage())
+                ->setPreviousPage($pager->getPreviousPage())
+                ->setFirstPage($pager->getFirstPage())
+                ->setLastPage($pager->getLastPage());
+        }
     }
 }
