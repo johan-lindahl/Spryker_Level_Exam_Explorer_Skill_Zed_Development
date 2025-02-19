@@ -8,8 +8,10 @@
 namespace Pyz\Zed\Antelope\Persistence\Propel\Mapper;
 
 use Generated\Shared\Transfer\AntelopeCollectionTransfer;
+use Generated\Shared\Transfer\AntelopeLocationTransfer;
 use Generated\Shared\Transfer\AntelopeTransfer;
 use Orm\Zed\Antelope\Persistence\Base\PyzAntelope;
+use Orm\Zed\Antelope\Persistence\Base\PyzAntelopeLocation;
 use Propel\Runtime\Collection\Collection;
 
 class AntelopeMapper
@@ -42,6 +44,14 @@ class AntelopeMapper
         return $antelopeCollectionTransfer;
     }
 
+    public function mapEntityToAntelopeLocationTransfer(
+        PyzAntelopeLocation $entityAntelopeLocation,
+        AntelopeLocationTransfer $antelopeLocationTransfer,
+    ): AntelopeLocationTransfer
+    {
+        return $antelopeLocationTransfer->fromArray($entityAntelopeLocation->toArray(), true);
+    }
+
     /**
      * @param array $entity
      * @param \Generated\Shared\Transfer\AntelopeTransfer $antelopeTransfer
@@ -49,9 +59,14 @@ class AntelopeMapper
      * @return \Generated\Shared\Transfer\AntelopeTransfer
      */
     public function mapEntityToAntelopeTransfer(
-        PyzAntelope $entity,
-        AntelopeTransfer $antelopeTransfer,
+        PyzAntelope $entityAntelope,
+        AntelopeTransfer $antelopeTransfer
     ): AntelopeTransfer {
-        return $antelopeTransfer->fromArray($entity->toArray(), true);
+        $antelopeLocationTransfer = $this->mapEntityToAntelopeLocationTransfer(
+            $entityAntelope->getPyzAntelopeLocation(),
+            new AntelopeLocationTransfer()
+        );
+        $antelopeTransfer->setAntelopeLocation($antelopeLocationTransfer);
+        return $antelopeTransfer->fromArray($entityAntelope->toArray(), true);
     }
 }

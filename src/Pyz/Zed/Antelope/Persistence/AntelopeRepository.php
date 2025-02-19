@@ -153,6 +153,14 @@ class AntelopeRepository extends AbstractRepository implements
         $antelopeEntities = $query->find();
         $antelopeMapper = $this->getFactory()->createAntelopeMapper();
 
+        /** @var \Orm\Zed\Antelope\Persistence\PyzAntelope $antelopeEntity */
+        foreach ($antelopeEntities as $antelopeEntity)
+        {
+            $idLocation = $antelopeEntity->getFkAntelopeLocation();
+            $antelopeLocationEntity = $this->getFactory()->createAntelopeLocationQuery()->findPk($idLocation);
+            $antelopeEntity->setPyzAntelopeLocation($antelopeLocationEntity);
+        }
+
         return $antelopeMapper->mapAntelopeEntityCollectionToAntelopeCollectionTransfer(
             $antelopeEntities,
         );

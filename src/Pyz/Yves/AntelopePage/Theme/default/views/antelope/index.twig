@@ -1,0 +1,25 @@
+{% extends template('page-layout-main') %}
+{% define data = {
+    antelopes: _view.antelopes
+} %}
+
+{% block body %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Color</th>
+            <th>Location</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for antelope in data.antelopes %}
+        <tr>
+            <td>{{ antelope.name }}</td>
+            <td>{{ antelope.color }}</td>             
+            <td>{{ antelope.antelopeLocation.locationName }}</td>             
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
