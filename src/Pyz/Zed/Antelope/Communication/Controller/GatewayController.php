@@ -14,14 +14,14 @@ use Generated\Shared\Transfer\AntelopeLocationResponseTransfer;
 use Generated\Shared\Transfer\AntelopeLocationTransfer;
 use Generated\Shared\Transfer\AntelopeResponseTransfer;
 use Generated\Shared\Transfer\AntelopeTransfer;
-use Spryker\Zed\Kernel\Communication\Controller\AbstractController;
+use Spryker\Zed\Kernel\Communication\Controller\AbstractGatewayController;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method \Pyz\Zed\Antelope\Business\AntelopeFacadeInterface getFacade()
  * @method \Pyz\Zed\Antelope\Persistence\AntelopeRepositoryInterface getRepository()
  */
-class GatewayController extends AbstractController
+class GatewayController extends AbstractGatewayController
 {
     public function getAntelopeAction(AntelopeCriteriaTransfer $antelopeCriteria): AntelopeResponseTransfer
     {

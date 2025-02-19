@@ -45,6 +45,7 @@ use SprykerShop\Yves\ShopUi\Plugin\Twig\FunctionTwigPlugin;
 use SprykerShop\Yves\ShopUi\Plugin\Twig\NumberFormatterTwigPlugin;
 use SprykerShop\Yves\ShopUi\Plugin\Twig\ShopUiTwigPlugin;
 use SprykerShop\Yves\WebProfilerWidget\Plugin\Twig\WebProfilerTwigLoaderPlugin;
+use SprykerShop\Yves\ShopUi\Plugin\Twig\GeneratePathTwigPlugin;
 
 class TwigDependencyProvider extends SprykerTwigDependencyProvider
 {
@@ -87,6 +88,7 @@ class TwigDependencyProvider extends SprykerTwigDependencyProvider
             new ShopCmsSlotTwigPlugin(),
             new ContentNavigationTwigPlugin(),
             new NumberFormatterTwigPlugin(),
+            new GeneratePathTwigPlugin(),
         ];
     }
 
